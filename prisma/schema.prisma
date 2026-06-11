@@ -1,0 +1,120 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  firstName String?
+  lastName  String?
+  role      String   @default("USER") // 'USER' or 'ADMIN'
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  quotes    Quote[]
+}
+
+model GlassType {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  category      String   @default("Otros")
+  productType   String   @default("MATERIAL") // 'MATERIAL' o 'SYSTEM'
+  pricePerM2    Float
+  minArea       Float    @default(0.30) // Volumen mínimo a cobrar
+  thicknesses   String   // JSON string
+  colors        String   // JSON string
+  hardwareOptions String @default("[]") // JSON: [{name: 'Acero', price: 150000}]
+  deliveryDays  String?  // Ej: '5 a 8 días'
+  isActive      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  quotes      Quote[]
+}
+
+model InstallationRule {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  basePrice   Float
+  pricePerM2  Float
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  quotes      Quote[]
+}
+
+model Quote {
+  id                 String           @id @default(cuid())
+  userId             String?
+  user               User?            @relation(fields: [userId], references: [id])
+  
+  // Client Info
+  clientName         String
+  clientPhone        String
+  clientCity         String
+  
+  // Specifications
+  glassTypeId        String
+  glassType          GlassType        @relation(fields: [glassTypeId], references: [id])
+  color              String
+  thickness          String
+  height             Float
+  width              Float
+  unit               String           @default("CM") // 'CM' or 'M'
+  hardwareName       String?          // Ej: "Acero Inoxidable"
+  hardwarePrice      Float            @default(0)
+  
+  // Pricing & Rules
+  requiresInstall    Boolean          @default(false)
+  installationRuleId String?
+  installationRule   InstallationRule? @relation(fields: [installationRuleId], references: [id])
+  
+  observations       String?
+  
+  // Calculated Pricing
+  areaM2             Float
+  basePrice          Float
+  installationPrice  Float
+  surcharges         Float            @default(0)
+  totalPrice         Float
+  
+  statusId           String
+  status             QuoteStatus      @relation(fields: [statusId], references: [id])
+  
+  uploads            Upload[]
+  
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+}
+
+model QuoteStatus {
+  id          String   @id @default(cuid())
+  name        String   // e.g. "Pending", "Approved", "Rejected", "Completed"
+  color       String   // hex color for UI
+  isDefault   Boolean  @default(false)
+  quotes      Quote[]
+}
+
+model Upload {
+  id        String   @id @default(cuid())
+  url       String
+  publicId  String   // Cloudinary public ID
+  quoteId   String
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model Setting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  updatedAt   DateTime @updatedAt
+}
