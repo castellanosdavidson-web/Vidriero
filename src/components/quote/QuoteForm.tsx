@@ -53,7 +53,7 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<QuoteFormValues>({
     resolver: zodResolver(quoteSchema),
     defaultValues: {
@@ -109,10 +109,8 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
       const result = await response.json();
       if (result.success && result.id) {
         setIsSuccess(true);
-        // Redirigir al comprobante después de un segundo
-        setTimeout(() => {
-          router.push(`/cotizacion/comprobante/${result.id}`);
-        }, 1500);
+        // Redirigir al comprobante inmediatamente
+        router.push(`/cotizacion/comprobante/${result.id}`);
       } else {
         alert("Error al guardar cotización.");
       }
@@ -397,8 +395,12 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
               Siguiente →
             </button>
           ) : (
-            <button type="submit" className="bg-primary text-white font-label-sm font-bold text-sm px-8 py-3 rounded-xl shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95 flex items-center gap-2">
-              Finalizar ✓
+            <button 
+              type="submit" 
+              disabled={isSubmitting || isSuccess}
+              className="bg-primary text-white font-label-sm font-bold text-sm px-8 py-3 rounded-xl shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? 'Procesando...' : isSuccess ? 'Redirigiendo...' : 'Finalizar ✓'}
             </button>
           )}
         </div>
