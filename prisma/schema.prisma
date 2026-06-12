@@ -76,6 +76,7 @@ model Quote {
   requiresInstall    Boolean          @default(false)
   installationRuleId String?
   installationRule   InstallationRule? @relation(fields: [installationRuleId], references: [id])
+  appliedInstallRules String? // JSON string: [{name, basePrice, pricePerM2}]
   
   observations       String?
   

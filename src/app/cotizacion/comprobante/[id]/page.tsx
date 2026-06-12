@@ -81,9 +81,19 @@ export default async function ComprobantePage({ params }: { params: Promise<{ id
               <div className="bg-white/5 border border-white/5 p-4 rounded-xl print:border print:border-black/20 print:bg-transparent">
                 <span className="block text-xs text-slate-400 mb-1 print:text-black/70">Instalación</span>
                 <span className="font-bold text-white print:text-black">{quote.requiresInstall ? 'Sí (Incluida)' : 'No requerida'}</span>
-                {quote.installationRule && (
-                  <span className="block text-xs text-slate-500 mt-1 print:text-black/70">{quote.installationRule.name}</span>
-                )}
+                {(() => {
+                  try {
+                    const rules = JSON.parse(quote.appliedInstallRules || '[]');
+                    if (rules.length > 0) {
+                      return rules.map((r: any) => (
+                        <span key={r.id} className="block text-xs text-slate-500 mt-1 print:text-black/70">• {r.name}</span>
+                      ));
+                    } else if (quote.installationRule) {
+                      return <span className="block text-xs text-slate-500 mt-1 print:text-black/70">{quote.installationRule.name}</span>;
+                    }
+                  } catch(e) {}
+                  return null;
+                })()}
               </div>
               {quote.hardwareName && (
                 <div className="bg-white/5 border border-white/5 p-4 rounded-xl print:border print:border-black/20 print:bg-transparent">

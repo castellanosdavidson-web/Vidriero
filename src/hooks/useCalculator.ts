@@ -10,6 +10,7 @@ export interface CalculatorInputs {
   requiresInstall: boolean;
   baseInstallPrice?: number;
   installPricePerM2?: number;
+  selectedInstallRules?: any[];
   surcharges?: number;
   minArea?: number;
   hardwarePrice?: number;
@@ -53,7 +54,13 @@ export function useCalculator(inputs: CalculatorInputs): CalculatorOutputs {
     // 4. Installation Price
     let installationPrice = 0;
     if (inputs.requiresInstall) {
-      installationPrice = (inputs.baseInstallPrice || 0) + (areaM2 * (inputs.installPricePerM2 || 0));
+      if (inputs.selectedInstallRules && inputs.selectedInstallRules.length > 0) {
+        inputs.selectedInstallRules.forEach(rule => {
+          installationPrice += (rule.basePrice || 0) + (areaM2 * (rule.pricePerM2 || 0));
+        });
+      } else {
+        installationPrice = (inputs.baseInstallPrice || 0) + (areaM2 * (inputs.installPricePerM2 || 0));
+      }
     }
 
     // 5. Herrajes (Fijo)
