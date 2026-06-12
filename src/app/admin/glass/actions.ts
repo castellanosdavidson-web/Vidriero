@@ -34,6 +34,7 @@ export async function saveGlassType(formData: FormData) {
   const minArea = parseFloat(formData.get('minArea') as string || '0.30');
   const productType = formData.get('productType') as string || 'MATERIAL';
   const hardwareOptions = formData.get('hardwareOptions') as string || '[]';
+  const systems = formData.get('systems') as string || null;
   const isActive = formData.get('isActive') === 'true';
   
   // En Next.js app router FormData para arrays puede ser engañoso.

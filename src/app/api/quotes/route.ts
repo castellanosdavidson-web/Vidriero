@@ -55,6 +55,7 @@ export async function POST(request: Request) {
         height: data.height,
         width: data.width,
         unit: data.unit,
+        system: data.system || null,
         requiresInstall: data.requiresInstall,
         installationRuleId: data.installationRuleId || null,
         appliedInstallRules: data.appliedInstallRules || null,

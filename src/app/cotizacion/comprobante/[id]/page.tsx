@@ -77,6 +77,9 @@ export default async function ComprobantePage({ params }: { params: Promise<{ id
               <div className="bg-white/5 border border-white/5 p-4 rounded-xl print:border print:border-black/20 print:bg-transparent">
                 <span className="block text-xs text-slate-400 mb-1 print:text-black/70">Grosor y Color</span>
                 <span className="font-bold text-white print:text-black">{quote.thickness} / {quote.color}</span>
+                {quote.system && (
+                  <span className="block text-xs text-primary mt-1 print:text-black">Sistema: {quote.system}</span>
+                )}
               </div>
               <div className="bg-white/5 border border-white/5 p-4 rounded-xl print:border print:border-black/20 print:bg-transparent">
                 <span className="block text-xs text-slate-400 mb-1 print:text-black/70">Instalación</span>

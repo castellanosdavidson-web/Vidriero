@@ -31,6 +31,7 @@ model GlassType {
   minArea       Float    @default(0.30) // Volumen mínimo a cobrar
   thicknesses   String   // JSON string
   colors        String   // JSON string
+  systems       String?  // JSON string
   hardwareOptions String @default("[]") // JSON: [{name: 'Acero', price: 150000}]
   deliveryDays  String?  // Ej: '5 a 8 días'
   isActive      Boolean  @default(true)
@@ -66,6 +67,7 @@ model Quote {
   glassType          GlassType        @relation(fields: [glassTypeId], references: [id])
   color              String
   thickness          String
+  system             String?
   height             Float
   width              Float
   unit               String           @default("CM") // 'CM' or 'M'

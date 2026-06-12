@@ -70,6 +70,9 @@ export function GlassForm({ glass }: { glass?: any }) {
   const [colors, setColors] = useState<string[]>(() => {
     try { return glass ? JSON.parse(glass.colors || '[]') : []; } catch(e) { return []; }
   });
+  const [systems, setSystems] = useState<string[]>(() => {
+    try { return glass && glass.systems ? JSON.parse(glass.systems) : []; } catch(e) { return []; }
+  });
   const [isActive, setIsActive] = useState<boolean>(glass ? glass.isActive : true);
   const [imageBase64, setImageBase64] = useState<string>(glass?.imageUrl || '');
 
@@ -89,6 +92,7 @@ export function GlassForm({ glass }: { glass?: any }) {
       <input type="hidden" name="id" value={glass?.id || 'new'} />
       <input type="hidden" name="thicknesses" value={JSON.stringify(thicknesses)} />
       <input type="hidden" name="colors" value={JSON.stringify(colors)} />
+      <input type="hidden" name="systems" value={JSON.stringify(systems)} />
       <input type="hidden" name="isActive" value={isActive ? 'true' : 'false'} />
       <input type="hidden" name="imageUrl" value={imageBase64} />
 
@@ -204,15 +208,25 @@ export function GlassForm({ glass }: { glass?: any }) {
           <TagInput 
             label="Grosores Disponibles" 
             tags={thicknesses} 
-            setTags={setThicknesses} 
+            onChange={setThicknesses} 
             placeholder="Ej. 4mm, 6mm..." 
           />
           <TagInput 
             label="Colores Disponibles" 
             tags={colors} 
-            setTags={setColors} 
-            placeholder="Ej. Claro, Bronce..." 
+            onChange={setColors} 
+            placeholder="Ej. Claro, Bronce, Espejo..." 
           />
+        </div>
+
+        <div>
+          <label className="block text-sm font-label-sm text-on-surface-variant font-medium mb-1">Sistemas Disponibles (Aperturas)</label>
+          <TagInput 
+            tags={systems} 
+            onChange={setSystems} 
+            placeholder="Ej. Batiente, Corrediza, Fijo..." 
+          />
+          <p className="text-[10px] text-on-surface-variant mt-1">Solo aplica para sistemas arquitectónicos (Baños, Ventanas, etc.).</p>
         </div>
 
         <div className="flex items-center gap-3 pt-4 border-t border-outline-variant/30">

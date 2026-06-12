@@ -21,6 +21,7 @@ const quoteSchema = z.object({
   requiresInstall: z.boolean(),
   installationRuleId: z.string().optional(),
   appliedInstallRules: z.string().optional(),
+  system: z.string().optional(),
   hardwareName: z.string().optional(),
   observations: z.string().optional(),
 });
@@ -78,10 +79,23 @@ export default function QuoteForm({ glassTypes, installationRules = [] }: { glas
       height: 100,
       width: 100,
       hardwareName: '',
+      system: '',
     },
   });
 
   const watchAllFields = watch();
+  
+  const thicknessOptions = React.useMemo(() => {
+    try { return JSON.parse(selectedGlass.thicknesses || '[]'); } catch(e) { return ['4mm']; }
+  }, [selectedGlass]);
+  
+  const colorOptions = React.useMemo(() => {
+    try { return JSON.parse(selectedGlass.colors || '[]'); } catch(e) { return ['claro']; }
+  }, [selectedGlass]);
+  
+  const hardwareList = React.useMemo(() => {
+    try { return JSON.parse(selectedGlass.hardwareOptions || '[]'); } catch(e) { return []; }
+  }, [selectedGlass]);
 
   const calculatorOutputs = useCalculator({
     height: watchAllFields.height || 0,
@@ -223,8 +237,6 @@ export default function QuoteForm({ glassTypes, installationRules = [] }: { glas
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
             {glassTypes && glassTypes.map((glass: any) => {
               const isSelected = watchAllFields.glassTypeId === glass.id;
-              // Use a generic icon for now
-              const icon = 'shield'; 
               return (
                 <button
                   key={glass.id}
@@ -232,7 +244,6 @@ export default function QuoteForm({ glassTypes, installationRules = [] }: { glas
                   onClick={() => {
                     setValue('glassTypeId', glass.id);
                     setSelectedGlass(glass);
-                    // Reset thickness and color when glass changes to avoid invalid combinations
                     try {
                       const t = JSON.parse(glass.thicknesses);
                       if (t.length > 0) setValue('thickness', t[0]);
@@ -255,15 +266,6 @@ export default function QuoteForm({ glassTypes, installationRules = [] }: { glas
               <p className="text-sm text-error col-span-3">No hay vidrios disponibles. Agrega uno en el panel de administración.</p>
             )}
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1">
-              <label className="font-label-sm text-sm text-slate-300">Grosor</label>
-              <select {...register('thickness')} className="w-full bg-[#0A0D14] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none">
-                {(() => {
-                  try {
-                    const t = JSON.parse(selectedGlass.thicknesses || '[]');
-                    if (t.length === 0) return <option value="">N/A</option>;
-                    return t.map((thick: string) => <option key={thick} value={thick}>{thick}</option>);
                   } catch(e) { return <option value="4mm">4mm</option>; }
                 })()}
               </select>
@@ -281,6 +283,27 @@ export default function QuoteForm({ glassTypes, installationRules = [] }: { glas
               </select>
             </div>
           </div>
+
+          {(() => {
+            try {
+              const systems = selectedGlass.systems ? JSON.parse(selectedGlass.systems) : [];
+              if (systems && systems.length > 0) {
+                return (
+                  <div className="mt-6">
+                    <label className="font-label-sm text-sm text-slate-300 block mb-2">Sistema / Apertura</label>
+                    <select 
+                      {...register('system')}
+                      className="w-full bg-[#0A0D14] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none"
+                    >
+                      <option value="">Selecciona el sistema...</option>
+                      {systems.map((s: string) => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                  </div>
+                );
+              }
+            } catch(e) {}
+            return null;
+          })()}
 
           {/* Opciones de Herrajes (Si es un Sistema) */}
           {(() => {
