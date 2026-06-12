@@ -56,6 +56,7 @@ export async function POST(request: Request) {
         width: data.width,
         unit: data.unit,
         requiresInstall: data.requiresInstall,
+        installationRuleId: data.installationRuleId || null,
         areaM2: data.areaM2,
         basePrice: data.basePrice,
         installationPrice: data.installationPrice,

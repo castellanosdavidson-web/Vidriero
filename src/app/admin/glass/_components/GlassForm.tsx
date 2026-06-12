@@ -71,6 +71,18 @@ export function GlassForm({ glass }: { glass?: any }) {
     try { return glass ? JSON.parse(glass.colors || '[]') : []; } catch(e) { return []; }
   });
   const [isActive, setIsActive] = useState<boolean>(glass ? glass.isActive : true);
+  const [imageBase64, setImageBase64] = useState<string>(glass?.imageUrl || '');
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageBase64(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   return (
     <form action={saveGlassType} className="space-y-6 bg-white/80 backdrop-blur border border-outline-variant/50 p-6 rounded-2xl shadow-sm">
@@ -78,6 +90,7 @@ export function GlassForm({ glass }: { glass?: any }) {
       <input type="hidden" name="thicknesses" value={JSON.stringify(thicknesses)} />
       <input type="hidden" name="colors" value={JSON.stringify(colors)} />
       <input type="hidden" name="isActive" value={isActive ? 'true' : 'false'} />
+      <input type="hidden" name="imageUrl" value={imageBase64} />
 
       <div className="space-y-4">
         <div>
@@ -133,15 +146,19 @@ export function GlassForm({ glass }: { glass?: any }) {
         </div>
 
         <div>
-          <label className="block text-sm font-label-sm text-on-surface-variant font-medium mb-1">URL de Imagen de Referencia (Opcional)</label>
-          <input 
-            type="url" 
-            name="imageUrl" 
-            defaultValue={glass?.imageUrl || ''} 
-            placeholder="https://ejemplo.com/imagen.jpg"
-            className="w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
-          />
-          <p className="text-[10px] text-on-surface-variant mt-1">Pega aquí el link de una imagen que muestre el vidrio o el sistema instalado.</p>
+          <label className="block text-sm font-label-sm text-on-surface-variant font-medium mb-1">Imagen de Referencia (Sube un archivo)</label>
+          <div className="flex flex-col gap-3">
+            {imageBase64 && (
+              <img src={imageBase64} alt="Preview" className="w-32 h-32 object-cover rounded-xl border border-outline-variant" />
+            )}
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+            />
+          </div>
+          <p className="text-[10px] text-on-surface-variant mt-1">Sube una imagen desde tu computador. Se guardará de forma segura.</p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">

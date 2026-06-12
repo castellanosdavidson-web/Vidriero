@@ -11,6 +11,11 @@ export default async function HomePage() {
     orderBy: { createdAt: 'desc' }
   });
 
+  const installationRules = await prisma.installationRule.findMany({
+    where: { isActive: true },
+    orderBy: { createdAt: 'asc' }
+  });
+
   return (
     <div className="bg-[#0A0D14] font-body-md text-slate-200 min-h-screen flex flex-col selection:bg-primary selection:text-white">
       {/* TopAppBar Navigation Shell - Glassmorphic */}
@@ -94,7 +99,7 @@ export default async function HomePage() {
               <div className="rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] bg-white/5 backdrop-blur-2xl border border-white/10 p-1 sm:p-2">
                 <div className="bg-[#11141D]/90 rounded-[22px] p-6 sm:p-8">
                   <Suspense fallback={<div className="h-[400px] flex items-center justify-center text-primary animate-pulse">Iniciando motor de cotización...</div>}>
-                    <QuoteForm glassTypes={glassTypes} />
+                    <QuoteForm glassTypes={glassTypes} installationRules={installationRules} />
                   </Suspense>
                 </div>
               </div>

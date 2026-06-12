@@ -19,6 +19,7 @@ const quoteSchema = z.object({
   width: z.number().min(1, 'Ancho requerido'),
   unit: z.enum(['CM', 'M']),
   requiresInstall: z.boolean(),
+  installationRuleId: z.string().optional(),
   hardwareName: z.string().optional(),
   observations: z.string().optional(),
 });
@@ -31,7 +32,7 @@ const MOCK_GLASS_TYPES = [
   { id: '2', name: 'Espejo Plata', description: 'Recubrimiento reflectante premium.', pricePerM2: 65000, icon: 'auto_awesome' },
 ];
 
-export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
+export default function QuoteForm({ glassTypes, installationRules = [] }: { glassTypes: any[], installationRules?: any[] }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialGlassId = searchParams.get('glass');
@@ -49,6 +50,11 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
   
   const [selectedGlass, setSelectedGlass] = useState(initialGlass);
   const [selectedHardware, setSelectedHardware] = useState<any>(null);
+  
+  // Set default installation rule
+  const defaultInstallRule = installationRules && installationRules.length > 0 ? installationRules[0] : null;
+  const [selectedInstallRule, setSelectedInstallRule] = useState(defaultInstallRule);
+
   const [showCrossSell, setShowCrossSell] = useState(false);
 
   const {
@@ -65,6 +71,7 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
       clientCity: '',
       unit: 'CM',
       requiresInstall: false,
+      installationRuleId: defaultInstallRule ? defaultInstallRule.id : '',
       glassTypeId: initialGlass.id,
       color: 'claro',
       thickness: '4mm',
@@ -82,8 +89,8 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
     unit: watchAllFields.unit || 'CM',
     pricePerM2: selectedGlass.pricePerM2,
     requiresInstall: watchAllFields.requiresInstall || false,
-    baseInstallPrice: 30000,
-    installPricePerM2: 15000,
+    baseInstallPrice: selectedInstallRule ? selectedInstallRule.basePrice : 30000,
+    installPricePerM2: selectedInstallRule ? selectedInstallRule.pricePerM2 : 15000,
     surcharges: 0,
     minArea: selectedGlass.minArea || 0.30,
     hardwarePrice: selectedHardware ? selectedHardware.price : 0,
@@ -326,6 +333,32 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
             </button>
           </div>
 
+          {/* Installation Rule Selector */}
+          <div className={`transition-all duration-300 mb-6 ${watchAllFields.requiresInstall ? 'block opacity-100' : 'hidden opacity-0 h-0 overflow-hidden'}`}>
+            <label className="font-label-sm text-sm text-slate-300 block mb-2">Selecciona el tipo de instalación</label>
+            {installationRules && installationRules.length > 0 ? (
+              <select 
+                {...register('installationRuleId')}
+                onChange={(e) => {
+                  const rule = installationRules.find(r => r.id === e.target.value);
+                  setSelectedInstallRule(rule || null);
+                  setValue('installationRuleId', e.target.value);
+                }}
+                className="w-full bg-[#0A0D14] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none"
+              >
+                {installationRules.map(rule => (
+                  <option key={rule.id} value={rule.id}>
+                    {rule.name} (Base: ${rule.basePrice.toLocaleString()} | +${rule.pricePerM2.toLocaleString()}/m²)
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <p className="text-xs text-amber-400 bg-amber-400/10 p-3 rounded-lg border border-amber-400/20">
+                Aviso: No hay reglas de instalación configuradas. Se usará una tarifa estándar.
+              </p>
+            )}
+          </div>
+
           <div className="bg-inverse-surface text-white rounded-xl p-6 shadow-xl relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 blur-3xl rounded-full"></div>
             <h3 className="text-lg font-display font-medium text-white/80 mb-4 relative z-10">Resumen Final</h3>
@@ -343,7 +376,7 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
               )}
               {watchAllFields.requiresInstall && (
                 <div className="flex justify-between">
-                  <span className="text-white/60">Instalación Certificada</span>
+                  <span className="text-white/60">Instalación ({selectedInstallRule ? selectedInstallRule.name : 'Estándar'})</span>
                   <span>${calculatorOutputs.installationPrice.toLocaleString()}</span>
                 </div>
               )}
