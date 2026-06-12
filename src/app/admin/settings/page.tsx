@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Plus, Edit2 } from 'lucide-react';
 import { deleteInstallationRule } from './actions';
 import { DeleteButton } from '@/components/ui/DeleteButton';
+import { GeneralSettingsForm } from './_components/GeneralSettingsForm';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,6 +12,11 @@ export default async function SettingsPage() {
   const rules = await prisma.installationRule.findMany({
     orderBy: { createdAt: 'desc' }
   });
+
+  const whatsappSetting = await prisma.setting.findUnique({
+    where: { key: 'WHATSAPP_NUMBER' }
+  });
+  const currentWhatsApp = whatsappSetting?.value || '573000000000';
 
   return (
     <div className="pb-24 max-w-4xl mx-auto font-body-md text-on-surface">
@@ -23,6 +29,14 @@ export default async function SettingsPage() {
 
       <main className="mt-20 px-4 space-y-8">
         
+        {/* Section: General Settings */}
+        <section className="space-y-4">
+          <div className="border-b border-outline-variant/30 pb-2">
+            <h2 className="font-display text-xl font-bold text-on-surface">Ajustes Generales</h2>
+          </div>
+          <GeneralSettingsForm currentNumber={currentWhatsApp} />
+        </section>
+
         {/* Section: Reglas de Instalación */}
         <section className="space-y-4">
           <div className="flex justify-between items-end border-b border-outline-variant/30 pb-2">

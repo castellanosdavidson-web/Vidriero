@@ -20,6 +20,11 @@ export default async function ComprobantePage({ params }: { params: { id: string
   const isLaminated = quote.glassType.category?.includes('Laminado');
   const isTempered = quote.glassType.category?.includes('Templado');
 
+  const whatsappSetting = await prisma.setting.findUnique({
+    where: { key: 'WHATSAPP_NUMBER' }
+  });
+  const whatsappNumber = whatsappSetting?.value || '573000000000';
+
   return (
     <div className="min-h-screen bg-[#0A0D14] font-body-md text-slate-200 py-12 px-4 flex items-center justify-center relative overflow-hidden print:bg-white print:text-black print:p-0">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px] pointer-events-none -z-10 print:hidden"></div>
@@ -144,7 +149,7 @@ export default async function ComprobantePage({ params }: { params: { id: string
           </Link>
           <PrintButton />
           <a 
-            href={`https://wa.me/573000000000?text=Hola,%20acabo%20de%20generar%20una%20cotizaci%C3%B3n%20en%20su%20p%C3%A1gina%20web.%0A%0A%2ACliente:%2A%20${quote.clientName}%0A%2AID%20Cotizaci%C3%B3n:%2A%20${quote.id.slice(-8).toUpperCase()}%0A%2ATotal%20Estimado:%2A%20$${quote.totalPrice.toLocaleString()}%0A%0AMe%20gustar%C3%ADa%20coordinar%20el%20servicio.`}
+            href={`https://wa.me/${whatsappNumber}?text=Hola,%20acabo%20de%20generar%20una%20cotizaci%C3%B3n%20en%20su%20p%C3%A1gina%20web.%0A%0A%2ACliente:%2A%20${quote.clientName}%0A%2AID%20Cotizaci%C3%B3n:%2A%20${quote.id.slice(-8).toUpperCase()}%0A%2ATotal%20Estimado:%2A%20$${quote.totalPrice.toLocaleString()}%0A%0AMe%20gustar%C3%ADa%20coordinar%20el%20servicio.`}
             target="_blank"
             rel="noopener noreferrer"
             className="px-6 py-3 bg-[#25D366] text-white rounded-xl font-bold shadow-md hover:bg-[#20b858] transition flex items-center gap-2"

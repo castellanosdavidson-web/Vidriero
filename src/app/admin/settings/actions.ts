@@ -43,3 +43,22 @@ export async function saveInstallationRule(formData: FormData) {
   revalidatePath('/admin/settings');
   redirect('/admin/settings');
 }
+
+export async function saveWhatsAppNumber(formData: FormData) {
+  const number = formData.get('whatsappNumber') as string;
+  
+  if (!number) return;
+
+  try {
+    await prisma.setting.upsert({
+      where: { key: 'WHATSAPP_NUMBER' },
+      update: { value: number },
+      create: { key: 'WHATSAPP_NUMBER', value: number, description: 'Número de WhatsApp principal para notificaciones' }
+    });
+  } catch (error) {
+    console.error('Error saving whatsapp number:', error);
+  }
+
+  revalidatePath('/admin/settings');
+  revalidatePath('/cotizacion/comprobante/[id]', 'page');
+}
