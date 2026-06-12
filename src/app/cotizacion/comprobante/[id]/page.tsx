@@ -4,9 +4,11 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { PrintButton } from '@/components/ui/PrintButton';
 
-export default async function ComprobantePage({ params }: { params: { id: string } }) {
+export default async function ComprobantePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  
   const quote = await prisma.quote.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       glassType: true,
       installationRule: true,
