@@ -100,8 +100,8 @@ export function GlassForm({ glass }: { glass?: any }) {
               defaultValue={glass?.productType || 'MATERIAL'}
               className="w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
             >
-              <option value="MATERIAL">Solo Material (B2B)</option>
-              <option value="SYSTEM">Sistema Arquitectónico (B2C)</option>
+              <option value="MATERIAL">Entrega Rápida (Solo Vidrio / B2B)</option>
+              <option value="SYSTEM">Proyectos / Casas (Con Instalación)</option>
             </select>
           </div>
           <div>
@@ -130,6 +130,18 @@ export function GlassForm({ glass }: { glass?: any }) {
             placeholder="Detalles sobre su uso..."
             className="w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors resize-none h-24"
           />
+        </div>
+
+        <div>
+          <label className="block text-sm font-label-sm text-on-surface-variant font-medium mb-1">URL de Imagen de Referencia (Opcional)</label>
+          <input 
+            type="url" 
+            name="imageUrl" 
+            defaultValue={glass?.imageUrl || ''} 
+            placeholder="https://ejemplo.com/imagen.jpg"
+            className="w-full bg-surface border border-outline-variant rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary transition-colors"
+          />
+          <p className="text-[10px] text-on-surface-variant mt-1">Pega aquí el link de una imagen que muestre el vidrio o el sistema instalado.</p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">

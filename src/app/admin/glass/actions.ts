@@ -9,9 +9,17 @@ export async function deleteGlassType(formData: FormData) {
   
   if (!id) return;
 
-  await prisma.glassType.delete({
-    where: { id }
-  });
+  try {
+    await prisma.glassType.delete({
+      where: { id }
+    });
+  } catch (error) {
+    // Si falla por dependencias (ej. tiene cotizaciones), lo desactivamos
+    await prisma.glassType.update({
+      where: { id },
+      data: { isActive: false }
+    });
+  }
 
   revalidatePath('/admin/glass');
 }
@@ -20,6 +28,7 @@ export async function saveGlassType(formData: FormData) {
   const id = formData.get('id') as string | null;
   const name = formData.get('name') as string;
   const description = formData.get('description') as string;
+  const imageUrl = formData.get('imageUrl') as string;
   const category = formData.get('category') as string;
   const pricePerM2 = parseFloat(formData.get('pricePerM2') as string);
   const minArea = parseFloat(formData.get('minArea') as string || '0.30');
@@ -39,6 +48,7 @@ export async function saveGlassType(formData: FormData) {
         data: {
           name,
           description,
+          imageUrl: imageUrl || null,
           category,
           productType,
           pricePerM2,
@@ -54,6 +64,7 @@ export async function saveGlassType(formData: FormData) {
         data: {
           name,
           description,
+          imageUrl: imageUrl || null,
           category,
           productType,
           pricePerM2,

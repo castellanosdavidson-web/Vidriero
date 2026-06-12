@@ -104,7 +104,7 @@ export default async function CatalogPage() {
                       <div key={glass.id} className="group bg-[#11141D]/80 backdrop-blur-xl rounded-3xl overflow-hidden border border-white/10 hover:border-white/30 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] transition-all duration-500 flex flex-col relative">
                         <div className="aspect-[4/3] relative overflow-hidden bg-[#0A0D14]">
                           <Image 
-                            src={getCategoryImage(glass.category || '')} 
+                            src={glass.imageUrl || getCategoryImage(glass.category || '')} 
                             alt={glass.name}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-70 group-hover:opacity-100"
@@ -138,7 +138,7 @@ export default async function CatalogPage() {
                             href={`/?glass=${glass.id}#cotizador`}
                             className="block w-full py-4 px-4 bg-white/5 hover:bg-primary border border-white/10 hover:border-primary text-white text-center rounded-xl font-bold transition-all duration-300 shadow-lg"
                           >
-                            Cotizar Configuración
+                            Cotizar Proyecto
                           </Link>
                         </div>
                       </div>
