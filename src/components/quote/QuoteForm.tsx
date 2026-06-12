@@ -422,12 +422,12 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
             <p className="text-slate-400 mb-8 leading-relaxed text-sm">
               Hemos recibido tu solicitud. Nuestro equipo comercial la revisará y pronto nos pondremos en contacto contigo para confirmar medidas y coordinar el servicio.
             </p>
-            <Link
+            <a
               href={`/cotizacion/comprobante/${createdQuoteId}`}
               className="w-full bg-primary text-white font-label-sm font-bold py-4 rounded-xl shadow-lg hover:bg-primary/90 transition-all active:scale-95 flex justify-center items-center gap-2"
             >
               Ver Ticket de Cotización 📄
-            </Link>
+            </a>
           </div>
         </div>
       )}
