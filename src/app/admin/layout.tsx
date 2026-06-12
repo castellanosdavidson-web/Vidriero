@@ -13,7 +13,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       {/* Sidebar */}
       <aside className="w-64 bg-[var(--color-card)] border-r border-[var(--color-border)] flex flex-col">
         <div className="p-6 border-b border-[var(--color-border)]">
-          <h2 className="text-xl font-display font-bold text-[var(--color-primary)]">Vidriero Admin</h2>
+          <h2 className="text-xl font-display font-bold text-[var(--color-primary)]">VitroClic Admin</h2>
         </div>
         <nav className="flex-1 p-4 space-y-2">
           <Link href="/admin" className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md bg-[var(--color-muted)] text-[var(--color-primary)]">

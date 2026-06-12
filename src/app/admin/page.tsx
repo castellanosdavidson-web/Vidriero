@@ -27,7 +27,7 @@ export default async function AdminDashboard() {
       <header className="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 flex justify-between items-center px-4 h-16 max-w-4xl">
         <div className="flex items-center gap-3">
           <span className="text-primary text-xl">☰</span>
-          <h1 className="font-display font-bold tracking-tight text-primary">VIDRIERO ADMIN</h1>
+          <h1 className="font-display font-bold tracking-tight text-primary">VITROCLIC ADMIN</h1>
         </div>
         <div className="flex items-center">
           <form action="/api/auth/signout" method="POST">

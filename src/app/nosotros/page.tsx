@@ -2,8 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Nosotros y Términos Legales - Vidriero',
-  description: 'Conoce más sobre Vidriero, nuestra misión y términos legales.',
+  title: 'Nosotros y Términos Legales - VitroClic',
+  description: 'Conoce más sobre VitroClic, nuestra misión y términos legales.',
 };
 
 export default function NosotrosPage() {
@@ -18,8 +18,10 @@ export default function NosotrosPage() {
       <header className="fixed top-0 w-full z-50 bg-[#0A0D14]/70 backdrop-blur-xl border-b border-white/5">
         <nav className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-20 max-w-[1400px] mx-auto">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-[#003B8A] rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-[0_0_20px_rgba(0,88,190,0.4)]">V</div>
-            <span className="font-display text-xl font-bold tracking-widest text-white">VIDRIERO</span>
+            <div className="w-10 h-10 flex items-center justify-center">
+              <img src="/vitroclic-icon.svg" alt="VitroClic Logo" width={40} height={40} />
+            </div>
+            <span className="font-display text-xl font-bold tracking-widest text-white">VITROCLIC</span>
           </Link>
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-10">
@@ -42,7 +44,7 @@ export default function NosotrosPage() {
         
         {/* Hero Section */}
         <div className="text-center mb-20">
-          <h1 className="font-display text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">Acerca de Vidriero</h1>
+          <h1 className="font-display text-4xl md:text-6xl font-bold text-white mb-6 tracking-tight">Acerca de VitroClic</h1>
           <p className="text-lg text-slate-400 font-light leading-relaxed">
             Nuestra visión es transformar la manera en que se cotiza y se contrata el suministro de sistemas arquitectónicos en vidrio en Colombia.
           </p>
@@ -58,7 +60,7 @@ export default function NosotrosPage() {
             </h2>
             <div className="space-y-4 text-slate-300 font-light leading-relaxed">
               <p>
-                Vidriero nace como la solución definitiva para la fricción que existe entre arquitectos, constructores, y dueños de hogar al momento de buscar suministro e instalación de cristales de seguridad. 
+                VitroClic nace como la solución definitiva para la fricción que existe entre arquitectos, constructores, y dueños de hogar al momento de buscar suministro e instalación de cristales de seguridad. 
               </p>
               <p>
                 Integramos la tecnología con el trabajo de la manufactura para entregar cotizaciones en tiempo récord, calculando de manera transparente costos de lámina cruda, templado, laminado y herrajes de importación. Nuestro ecosistema favorece un trato justo y una logística impecable desde el taller hasta tu obra.
@@ -109,7 +111,7 @@ export default function NosotrosPage() {
 
       {/* Footer minimalista */}
       <footer className="border-t border-white/5 py-10 text-center text-slate-500 text-sm font-light relative z-10">
-        <p>© 2026 VIDRIERO. Plataforma Avanzada de Suministro Arquitectónico.</p>
+        <p>© 2026 VITROCLIC. Plataforma Avanzada de Suministro Arquitectónico.</p>
       </footer>
     </div>
   );

@@ -17,8 +17,10 @@ export default async function HomePage() {
       <header className="fixed top-0 w-full z-50 bg-[#0A0D14]/70 backdrop-blur-xl border-b border-white/5">
         <nav className="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-20 max-w-[1400px] mx-auto">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-[#003B8A] rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-[0_0_20px_rgba(0,88,190,0.4)]">V</div>
-            <span className="font-display text-xl font-bold tracking-widest text-white">VIDRIERO</span>
+            <div className="w-10 h-10 flex items-center justify-center">
+              <Image src="/vitroclic-icon.svg" alt="VitroClic Logo" width={40} height={40} />
+            </div>
+            <span className="font-display text-xl font-bold tracking-widest text-white">VITROCLIC</span>
           </div>
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-10">
@@ -192,7 +194,7 @@ export default async function HomePage() {
       
       {/* Footer minimalista */}
       <footer className="border-t border-white/5 py-10 text-center text-slate-500 text-sm font-light">
-        <p>© 2026 VIDRIERO. Plataforma Avanzada de Suministro Arquitectónico.</p>
+        <p>© 2026 VITROCLIC. Plataforma Avanzada de Suministro Arquitectónico.</p>
       </footer>
     </div>
   );

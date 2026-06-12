@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #0058be;
+  --color-primary: #009fce;
   --color-on-primary: #ffffff;
-  --color-primary-container: #2170e4;
-  --color-on-primary-container: #fefcff;
-  --color-secondary: #565e74;
+  --color-primary-container: #4dbced;
+  --color-on-primary-container: #ffffff;
+  --color-secondary: #343f46;
   --color-on-secondary: #ffffff;
-  --color-secondary-container: #dae2fd;
-  --color-on-secondary-container: #5c647a;
+  --color-secondary-container: #d9e2e8;
+  --color-on-secondary-container: #1b2226;
   --color-tertiary: #924700;
   --color-on-tertiary: #ffffff;
   --color-tertiary-container: #b75b00;
@@ -25,9 +25,9 @@
   --color-on-surface-variant: #424754;
   --color-outline: #727785;
   --color-outline-variant: #c2c6d6;
-  --color-inverse-surface: #2d3133;
-  --color-inverse-on-surface: #eff1f3;
-  --color-inverse-primary: #adc6ff;
+  --color-inverse-surface: #343f46;
+  --color-inverse-on-surface: #ffffff;
+  --color-inverse-primary: #85d5f8;
   --color-surface-tint: #005ac2;
   --color-surface-container-lowest: #ffffff;
   --color-surface-container-low: #f2f4f6;
@@ -36,8 +36,8 @@
   --color-surface-container-highest: #e0e3e5;
 
   /* Fonts */
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-geist-sans);
+  --font-sans: var(--font-montserrat);
+  --font-display: var(--font-montserrat);
   
   /* Fallbacks for older setup */
   --color-card: #ffffff;

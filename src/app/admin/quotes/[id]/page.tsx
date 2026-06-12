@@ -105,7 +105,7 @@ export default async function QuoteDetailPage({ params }: { params: Promise<{ id
               </div>
             </div>
             <a 
-              href={`https://wa.me/${quote.clientPhone.replace(/\D/g,'')}?text=${encodeURIComponent(`Hola ${quote.clientName}, te escribo de VIDRIERO sobre tu cotización.`)}`}
+              href={`https://wa.me/${quote.clientPhone.replace(/\D/g,'')}?text=${encodeURIComponent(`Hola ${quote.clientName}, te escribo de VitroClic sobre tu cotización.`)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full bg-primary hover:bg-primary-container transition-all py-3 rounded-lg flex items-center justify-center gap-2 text-white font-semibold active:scale-95 duration-150 relative z-10"

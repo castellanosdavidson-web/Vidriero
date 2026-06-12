@@ -41,8 +41,10 @@ export default function LoginPage() {
         <div className="bg-[#11141D]/80 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-3xl p-10 relative z-10">
           
           <div className="text-center mb-10">
-            <div className="w-16 h-16 mx-auto bg-gradient-to-br from-primary to-[#003B8A] rounded-2xl flex items-center justify-center text-white font-bold text-3xl shadow-[0_0_30px_rgba(0,88,190,0.4)] mb-6">V</div>
-            <h1 className="font-display text-2xl font-bold tracking-widest text-white uppercase">VIDRIERO</h1>
+            <div className="w-16 h-16 mx-auto flex items-center justify-center mb-6">
+              <img src="/vitroclic-icon.svg" alt="VitroClic Logo" width={64} height={64} />
+            </div>
+            <h1 className="font-display text-2xl font-bold tracking-widest text-white uppercase">VITROCLIC</h1>
             <p className="font-body-sm text-sm text-slate-400 mt-2 font-light">Acceso restringido para administradores</p>
           </div>
 
@@ -56,7 +58,7 @@ export default function LoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@vidriero.com"
+                placeholder="admin@vitroclic.com"
                 required
                 className="w-full bg-[#0A0D14] border border-white/10 rounded-xl px-4 py-3.5 text-white focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-all placeholder:text-slate-600"
               />
