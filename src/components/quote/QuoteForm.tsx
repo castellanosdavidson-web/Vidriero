@@ -37,6 +37,8 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
   
   const [step, setStep] = useState(1);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [createdQuoteId, setCreatedQuoteId] = useState<string | null>(null);
   
   // Ensure we fall back gracefully if no glass types are available
   const fallbackGlass = glassTypes && glassTypes.length > 0 ? glassTypes[0] : { id: 'dummy', name: 'No hay vidrios', pricePerM2: 0, thicknesses: '[]', colors: '[]' };
@@ -109,8 +111,8 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
       const result = await response.json();
       if (result.success && result.id) {
         setIsSuccess(true);
-        // Redirigir al comprobante inmediatamente
-        router.push(`/cotizacion/comprobante/${result.id}`);
+        setCreatedQuoteId(result.id);
+        setShowSuccessPopup(true);
       } else {
         alert("Error al guardar cotización.");
       }
@@ -400,12 +402,34 @@ export default function QuoteForm({ glassTypes }: { glassTypes: any[] }) {
               disabled={isSubmitting || isSuccess}
               className="bg-primary text-white font-label-sm font-bold text-sm px-8 py-3 rounded-xl shadow-lg shadow-primary/30 hover:bg-primary/90 transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? 'Procesando...' : isSuccess ? 'Redirigiendo...' : 'Finalizar ✓'}
+              {isSubmitting ? 'Procesando...' : isSuccess ? '¡Completado!' : 'Finalizar ✓'}
             </button>
           )}
         </div>
 
       </form>
+
+      {/* Success Popup Modal */}
+      {showSuccessPopup && createdQuoteId && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-[#0A0D14]/80 backdrop-blur-sm" onClick={() => {}}></div>
+          <div className="relative z-10 bg-[#11141D] border border-white/10 rounded-3xl p-8 max-w-md w-full shadow-2xl text-center transform animate-in fade-in zoom-in duration-300">
+            <div className="w-20 h-20 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h3 className="font-display text-2xl font-bold text-white mb-2">¡Cotización Exitosa!</h3>
+            <p className="text-slate-400 mb-8 leading-relaxed text-sm">
+              Hemos recibido tu solicitud. Nuestro equipo comercial la revisará y pronto nos pondremos en contacto contigo para confirmar medidas y coordinar el servicio.
+            </p>
+            <button
+              onClick={() => router.push(`/cotizacion/comprobante/${createdQuoteId}`)}
+              className="w-full bg-primary text-white font-label-sm font-bold py-4 rounded-xl shadow-lg hover:bg-primary/90 transition-all active:scale-95 flex justify-center items-center gap-2"
+            >
+              Ver Ticket de Cotización 📄
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
